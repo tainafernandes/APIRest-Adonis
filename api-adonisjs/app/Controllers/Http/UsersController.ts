@@ -7,11 +7,12 @@ export default class UsersController {
     return user;
   }
 
-  public async store({}: HttpContextContract) {
+  public async store({ request }: HttpContextContract) {
+    const body = request.only(["name", "email", "password"]);
     const user = await User.create({
-      name: "Taina",
-      email: "taina@email.com",
-      password: "123456",
+      name: body.name,
+      email: body.email,
+      password: body.password,
     });
 
     console.log(user.$isPersisted);
