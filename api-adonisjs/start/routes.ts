@@ -19,7 +19,10 @@
 */
 
 import Route from "@ioc:Adonis/Core/Route";
+import UsersController from "App/Controllers/Http/UsersController";
 
 Route.get("/", async () => {
   return "world";
 });
+
+Route.resource("/users", "UsersController"); //resource cria série de rotas
