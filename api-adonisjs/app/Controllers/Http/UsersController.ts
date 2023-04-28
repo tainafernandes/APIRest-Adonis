@@ -33,8 +33,11 @@ export default class UsersController {
     return user;
   }
 
-  public async destroy({}: HttpContextContract) {
-    return "destroy";
+  public async destroy({ request }: HttpContextContract) {
+    const userId = request.param("id");
+    const user = await User.findOrFail(userId);
+    await user.delete();
+    return "Destroy user";
   }
 }
 
