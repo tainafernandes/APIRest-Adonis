@@ -21,8 +21,23 @@
 import Route from "@ioc:Adonis/Core/Route";
 import UsersController from "App/Controllers/Http/UsersController";
 
-Route.get("/", async () => {
-  return "world";
+Route.get("/", async () => {});
+
+Route.post("login", async ({ auth, request, response }) => {
+  const email = request.input("email");
+  const password = request.input("password");
+
+  try {
+    const token = await auth.use("api").attempt(email, password);
+    return token;
+  } catch {
+    return response.unauthorized("Invalid credentials");
+  }
+});
+
+Route.get("dashboard", async ({ auth }) => {
+  await auth.use("api").authenticate();
+  return `Olá ${auth.user.name}, você está autenticado`;
 });
 
 Route.resource("/users", "UsersController"); //resource cria série de rotas
